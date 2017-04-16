@@ -32,20 +32,6 @@ module LetterOpenerWebS3::MessageExtension
       File.read(File.join(letter_opener_path.gsub('message.rb', ''), 'message.html.erb'))
     end
 
-    def body
-      @body ||= begin
-        body = (@part || @mail).decoded
-
-        mail.attachments.each do |attachment|
-          body.gsub!(attachment.url, "attachments/#{attachment.filename}")
-        end
-
-        body.gsub!(/=\"\/assets/, "=\"#{URI::join(LetterOpenerWebS3.domain, 'assets')}") if LetterOpenerWebS3.domain
-
-        body
-      end
-    end
-
     private
 
     def object(filepath)
