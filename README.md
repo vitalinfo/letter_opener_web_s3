@@ -1,4 +1,4 @@
-# LetterOpenerWebS3
+# LetterOpenerWebS3 for Rails 5 and Rails 4
 
 Addon for `letter_opener_web` and `letter_opener` gems to store files on Amazon S3 
 
@@ -20,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-Configure AWS credentials and domain to rails app assets
+Configure AWS credentials
 
 ```ruby
 LetterOpenerWebS3.configure do |spec|
@@ -30,9 +30,12 @@ LetterOpenerWebS3.configure do |spec|
       access_key_id: AWS_S3_KEY_ID,
       secret_access_key: AWS_S3_ACCESS_KEY
   }
-  spec.domain = APP_DOMAIN
 end
 ```
+
+To support application assets need configure `action_mailer.asset_host`
+
+Without configuration, gem works like `letter_opener_web` use local file storage
 
 ## TODO
 
