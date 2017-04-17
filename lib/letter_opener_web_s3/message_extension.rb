@@ -12,14 +12,13 @@ module LetterOpenerWebS3::MessageExtension
     def render
       if mail.attachments.any?
         attachments_dir = File.join(@location, 'attachments')
-        # TODO: need check render with attachment
         mail.attachments.each do |attachment|
           filename = attachment.filename.gsub(/[^\w.]/, '_')
           path = File.join(attachments_dir, filename)
 
           object(path).put(body: attachment.body.raw_source, content_length: attachment.body.raw_source.size)
 
-          @attachments << [attachment.filename, "attachments/#{URI.escape(filename)}"]
+          @attachments << [attachment.filename, URI.escape(object(path).public_url)]
         end
       end
 
@@ -30,6 +29,19 @@ module LetterOpenerWebS3::MessageExtension
     def template
       letter_opener_path = $".select{|f| f.match(/letter_opener\/message.rb/)}.first
       File.read(File.join(letter_opener_path.gsub('message.rb', ''), 'message.html.erb'))
+    end
+
+    def body
+      @body ||= begin
+        body = (@part || @mail).decoded
+
+        mail.attachments.each do |attachment|
+          item = @attachments.select{|filename, _| filename == attachment.filename}.first
+          body.gsub!(attachment.url, item.last)
+        end
+
+        body
+      end
     end
 
     private
