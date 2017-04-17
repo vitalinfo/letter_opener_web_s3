@@ -26,7 +26,7 @@ module LetterOpenerWebS3::LetterExtension
     def attachments
       @attachments ||= LetterOpenerWebS3.bucket.objects(prefix: File.join(base_dir, 'attachments'))
                            .each_with_object({}) do |file, hash|
-        hash[File.basename(file)] = File.expand_path(file)
+        hash[File.basename(file.key)] = LetterOpenerWebS3.bucket.object(file.key).public_url
       end
     end
 

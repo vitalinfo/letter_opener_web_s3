@@ -37,10 +37,6 @@ To support application assets need configure `action_mailer.asset_host`
 
 Without configuration, gem works like `letter_opener_web` use local file storage
 
-## TODO
-
-Need check letters with attachments 
-
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/letter_opener_web_s3. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
