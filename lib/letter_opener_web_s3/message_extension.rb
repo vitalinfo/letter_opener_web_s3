@@ -2,10 +2,11 @@ module LetterOpenerWebS3::MessageExtension
   extend ActiveSupport::Concern
 
   included do
-    def initialize(location, mail, part = nil)
+    def initialize(mail, options = {})
+      location = options[:location]
       @location = location.gsub("#{Rails.root.to_s}/", '')
       @mail = mail
-      @part = part
+      @part = options[:part]
       @attachments = []
     end
 
