@@ -1,5 +1,5 @@
 require 'active_support'
-require 'aws-sdk'
+require 'aws-sdk-s3'
 require 'letter_opener'
 require 'letter_opener_web'
 require "letter_opener_web_s3/version"
