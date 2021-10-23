@@ -1,3 +1,5 @@
+require 'net/http'
+
 module LetterOpenerWebS3::LetterExtension
   extend ActiveSupport::Concern
 
@@ -34,6 +36,10 @@ module LetterOpenerWebS3::LetterExtension
       LetterOpenerWebS3.bucket.objects(prefix: base_dir).each(&:delete)
     end
 
+    def valid?
+      exists?
+    end
+
     def exists?
       LetterOpenerWebS3.bucket.objects(prefix: base_dir).count > 0
     end
@@ -44,16 +50,16 @@ module LetterOpenerWebS3::LetterExtension
       "#{letters_location}#{id}"
     end
 
+    def url(style)
+      LetterOpenerWebS3.bucket.object(File.join(base_dir, "#{style}.html")).presigned_url(:get)
+    end
+
     def read_file(style)
-      Kernel.open(LetterOpenerWebS3.bucket
-                      .object(File.join(base_dir, "#{style}.html")).presigned_url(:get)).read
-    rescue
-      ''
+      Net::HTTP.get_response(URI.parse(url(style))).body
     end
 
     def style_exists?(style)
       LetterOpenerWebS3.bucket.object(File.join(base_dir, "#{style}.html")).exists?
     end
-
   end
 end

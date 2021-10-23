@@ -27,5 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec-rails", '~> 3.5'
   spec.add_development_dependency "activesupport", ">= 4.0"
   spec.add_dependency "letter_opener_web", "~> 1.3"
-  spec.add_dependency "aws-sdk", "~> 2"
+  spec.add_dependency "aws-sdk-s3", "~> 1.96.1"
 end

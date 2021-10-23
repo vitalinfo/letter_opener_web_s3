@@ -2,10 +2,12 @@ module LetterOpenerWebS3::MessageExtension
   extend ActiveSupport::Concern
 
   included do
-    def initialize(location, mail, part = nil)
+    def initialize(mail, options = {})
+      location = options[:location]
       @location = location.gsub("#{Rails.root.to_s}/", '')
       @mail = mail
-      @part = part
+      @part = options[:part]
+      @template = options[:message_template] || LetterOpener.configuration.message_template
       @attachments = []
     end
 
@@ -24,11 +26,6 @@ module LetterOpenerWebS3::MessageExtension
 
       str = ERB.new(template).result(binding)
       object(filepath).put(body: str, content_length: str.size)
-    end
-
-    def template
-      letter_opener_path = $".select{|f| f.match(/letter_opener\/message.rb/)}.first
-      File.read(File.join(letter_opener_path.gsub('message.rb', ''), 'message.html.erb'))
     end
 
     def body
