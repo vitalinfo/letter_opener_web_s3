@@ -36,6 +36,10 @@ module LetterOpenerWebS3::LetterExtension
       LetterOpenerWebS3.bucket.objects(prefix: base_dir).each(&:delete)
     end
 
+    def valid?
+      exists?
+    end
+
     def exists?
       LetterOpenerWebS3.bucket.objects(prefix: base_dir).count > 0
     end
